@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,15 +25,11 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
-    private Fragment fragment_1, fragment_2, fragment_3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fragment_1 = Fragment_1.newInstance();
-        fragment_2 = Fragment_2.newInstance();
-        fragment_3 = Fragment_3.newInstance();
 
         init();
 
@@ -65,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return fragment_1;
+                        return Fragment_1.newInstance();
                     case 1:
-                        return fragment_2;
+                        return Fragment_2.newInstance();
                     case 2:
-                        return fragment_3;
+                        return Fragment_3.newInstance();
                     default:
                         return null;
                 }
@@ -116,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        materialViewPager.getViewPager().setOffscreenPageLimit(1);
+        materialViewPager.getViewPager().setOffscreenPageLimit(3);
         materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
         materialViewPager.getViewPager().setCurrentItem(0);
     }

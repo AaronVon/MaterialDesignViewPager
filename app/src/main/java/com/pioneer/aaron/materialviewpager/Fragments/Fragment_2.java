@@ -1,6 +1,7 @@
 package com.pioneer.aaron.materialviewpager.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,9 @@ import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.pioneer.aaron.materialviewpager.R;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by Aaron on 6/17/15.
  */
@@ -22,6 +26,7 @@ public class Fragment_2 extends Fragment {
     private View rootView;
     private ObservableScrollView mScrollView;
     private boolean instanceLoaded = false;
+
 
     private TextView countTextView;
 
@@ -33,43 +38,41 @@ public class Fragment_2 extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.d("Attach", "fragment 2 is attached");
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        rootView = inflater.inflate(R.layout.fragment_2_layout,
+                (ViewGroup) getActivity().findViewById(R.id.materialViewPager), false);
+        countTextView = (TextView) rootView.findViewById(R.id.count_text_2);
+        instanceLoaded = true;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_1_layout, container, false);
-        init();
+        Log.d("onCreateView", "fragment 2 created");
+        ViewGroup viewGroup = (ViewGroup) rootView.getParent();
+        if (viewGroup != null) {
+            viewGroup.removeAllViewsInLayout();
+        }
         return rootView;
     }
 
-    private void init() {
-        countTextView = (TextView) rootView.findViewById(R.id.count_text_1);
-        new AsyncTask() {
-
-            @Override
-            protected Object doInBackground(Object[] params) {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                countTextView.append("ok");
-
-            }
-        }.execute();
+    private void updateUI() {
+        countTextView.append("\n" + "fragment 2");
     }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && instanceLoaded) {
+            updateUI();
+        }
     }
 
 
@@ -80,4 +83,5 @@ public class Fragment_2 extends Fragment {
         mScrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
         MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
     }
+
 }
